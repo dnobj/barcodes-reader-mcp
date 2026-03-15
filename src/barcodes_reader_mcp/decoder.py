@@ -53,7 +53,13 @@ def decode_barcodes(*, image_path: str | None = None, image_base64: str | None =
 
     results: list[BarcodeResult] = []
     for detection in detections:
-        position = [{"x": point.x, "y": point.y} for point in detection.position]
+        pos = detection.position
+        position = [
+            {"x": pos.top_left.x, "y": pos.top_left.y},
+            {"x": pos.top_right.x, "y": pos.top_right.y},
+            {"x": pos.bottom_right.x, "y": pos.bottom_right.y},
+            {"x": pos.bottom_left.x, "y": pos.bottom_left.y},
+        ]
         results.append(
             BarcodeResult(
                 format=str(detection.format),
